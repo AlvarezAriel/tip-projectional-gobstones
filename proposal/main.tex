@@ -1,0 +1,62 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}    
+\usepackage[spanish]{babel} 
+\usepackage{fullpage}       
+\usepackage{csquotes}
+\usepackage[backend=bibtex,style=numeric,sorting=ynt]{biblatex}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+
+\addbibresource{refs.bib}
+
+\title{Propuesta de Trabajo de Inserción Profesional}
+\date{\today}
+
+\begin{document}
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+
+%----------------------------------------------------------------------------------------
+%   HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+% \textsc{\LARGE Propuesta de Trabajo de Inserción Profesional}\\[1.5cm] % Name of your university/college
+
+%----------------------------------------------------------------------------------------
+%   TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+{ \huge \bfseries Propuesta de Trabajo de Inserción Profesional}\\[0.4cm] % Title of your document
+
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+ 
+\input{cover.tex}
+
+\bigskip
+\bigskip
+\bigskip
+
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{assets/logo-unq.jpg}\\[1cm]
+
+\end{titlepage}
+
+\maketitle
+
+\input{content.tex}
+
+
+\printbibliography
+
+\end{document}
