@@ -1,4 +1,12 @@
+\begin{abstract}
+El lenguaje Gobstones posee una secuencia didáctica bien definida que ha demostrado ser eficaz, pero el entorno de programación usado actualmente, aún cumpliendo las funciones de edición para las cuales fue creado, no refuerza activamente esta didáctica ni suple las necesidades de una comunidad creciente de usuarios. El presente trabajo busca desarrollar un \textit{Entorno Integral de Aprendizaje} centrado en un \textit{Editor Proyectivo}, haciendo uso de sus cualidades intrínsecas para facilitarle al alumno la comunicación de soluciones en términos de conceptos en lugar de trabajar sobre texto plano.
+\end{abstract}
+
+
 \section{Introducción}
+
+En esta sección se detallan brevemente las características del lenguaje Gobstones y de los editores proyectivos. Luego se presenta un caso particular de ambiente de desarrollo de lenguajes basados en tecnología proyectiva, que será utilizado para implementar el entorno propuesto.
+
 
 \subsection{El lenguaje Gobstones}
 
@@ -6,7 +14,7 @@ Gobstones\cite{Gobstones} [TODO: hablar sobre gobstones]
 
 \subsection{Editores Proyectivos}
 
-El término Editor Proyectivo fue acuñado por Martin Fowler en el año 2005\cite{Fowler}, al intentar plantear un ambiente de desarrollo donde el programador pudiera expresar sus ideas en términos de conceptos en lugar de texto. Lo que vemos como texto pasaría entonces a constituir una representación editable del concepto al que hace referencia (y al cual Fowler llama \textit{representación abstracta}).
+El término Editor Proyectivo fue acuñado por Martin Fowler en el año 2005\cite{Fowler}, al intentar plantear un ambiente de desarrollo donde el programador pueda expresar sus ideas en términos de conceptos en lugar de texto. Lo que vemos como texto pasaría entonces a constituir una representación editable del concepto al que hace referencia (y al cual Fowler llama \textit{representación abstracta}).
 
 De esta manera, los conceptos del lenguaje son el dominio de los editores proyectivos, y decimos que un programa es una \textit{representación abstracta} construida utilizando dichos conceptos. Para modificar esta representación el programador interactúa con una interfaz de usuario, llamada \textit{representación editable}, sobre la cual la \textit{representación abstracta} se \textit{proyecta} en forma de texto\cite{voelter2014projectional}. 
 
@@ -16,7 +24,6 @@ De esta manera, los conceptos del lenguaje son el dominio de los editores proyec
     \caption{Representaciones de un programa en un editor proyectivo}
   \end{center}
 \end{wrapfigure}
-
 
 A su vez, la \textit{representación abstracta} puede persistirse de diferentes maneras a diferentes soportes, con lo cual se introduce la idea de \textit{representación persistida} para hablar del formato en que guardará el programa, ya sea en una base de datos, un archivo binario, un texto con formato XML, etc.
 
@@ -38,11 +45,17 @@ Esto tiene varias consecuencias:
 \subsection{MPS Workbench}
 
 MPS (Meta programming System)\cite{MPS} es un ambiente de trabajo orientado al desarrollo de lenguajes específicos de dominio, de la empresa JetBrains, basado en las ideas de Fowler; hoy en día se posiciona como uno de los referentes más importantes en editores proyectivos\cite{LanguageModularity}. 
-Entre los productos desarrollados utilizando MPS se encuentran \textit{MetaR} \cite{MetaR}, un ambiente especializado en biomedicina computacional, y \textit{mbeddr} \cite{mbeddr}, un ambiente orientado a software embebido.
+Entre los productos desarrollados utilizando MPS se encuentran: \textit{MetaR} \cite{MetaR}, un ambiente especializado en biomedicina computacional; \textit{mbeddr} \cite{mbeddr}, un ambiente orientado a software embebido.
 
 \section{Motivación}
 
-En el libro \textit{"Las bases conceptuales de la Programación. Una nueva forma de aprender a programar"}\cite{Gobstones} se presenta una secuencia didáctica bien detallada junto con el entorno \textit{PyGobstones}\cite{PyGobstones}, pero notamos que en el marco de una adopción cada vez mayor de esta didáctica es necesario:
+En el libro \textit{"Las bases conceptuales de la Programación. Una nueva forma de aprender a programar"}\cite{Gobstones} se presenta una secuencia didáctica bien detallada junto con el entorno \textit{PyGobstones}\cite{PyGobstones}, pero notamos que en el marco de una adopción cada vez mayor de esta didáctica, el entorno debe cubrir nuevas necesidades.
+
+
+\subsection{No sólo un editor, sino un Entorno Integral de Aprendizaje}
+
+Hasta el momento, \textit{PyGobstones} cumple su función de editor especializado
+
 
 \begin{itemize}
   \item disponer de un ambiente que sea fácilmente extensible y posea una arquitectura que agilice la colaboración de la comunidad de Gobstones.
@@ -54,7 +67,7 @@ En el libro \textit{"Las bases conceptuales de la Programación. Una nueva forma
 
 \section{Propuesta}
 
-Se propone utilizar \textit{MPS Workbench} para implementar un \textit{Entorno Integral de Aprendizaje}, supliendo las necesidades antes mencionadas, siendo que:
+Se propone utilizar \textit{MPS Workbench} para implementar un \textit{Entorno Integral de Aprendizaje} porque cubre las necesidades antes mencionadas, dado que:
 
 \begin{itemize}
   \item soporta tanto extensión de lenguaje como extensión del entorno mediante la creación de plugins que pueden no depender entre sí.
@@ -64,6 +77,8 @@ Se propone utilizar \textit{MPS Workbench} para implementar un \textit{Entorno I
 \end{itemize}
 
 A su vez, la naturaleza proyectiva del entorno le permite al alumno concentrarse en el concepto que desea expresar al evitarle errores comunes de sintaxis. Además, el programa siempre se presenta al alumno con un formato estándar (bien indentado, secciones organizadas, etc), ayudándolo a incorporar más rápidamente estas buenas prácticas al reconocerlas como algo natural. Esto es así porque al principio el alumno no posee una noción de estilos \textit{correctos}, sino que se va formando a medida que es expuesto a ellos.
+
+Además, mantiene las virtudes de la tecnología utilizada en la implementación original: multiplataforma, capacidad para una interfaz minimalista, capacidad para mantener la identidad gráfica de Gobstones
 
 En particular, esta implementación busca:
 \begin{itemize}
