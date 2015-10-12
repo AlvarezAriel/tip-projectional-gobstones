@@ -1,5 +1,5 @@
 \begin{abstract}
-El lenguaje Gobstones posee una secuencia didáctica bien definida que ha demostrado ser eficaz, pero el entorno de programación usado actualmente, aún cumpliendo las funciones de edición para las cuales fue creado, no refuerza activamente esta didáctica ni suple las necesidades de una comunidad creciente de usuarios. El presente trabajo busca desarrollar un \textit{Entorno Integral de Aprendizaje} centrado en un \textit{Editor Proyectivo}, haciendo uso de sus cualidades intrínsecas para facilitarle al alumno la comunicación de soluciones en términos de conceptos en lugar de trabajar sobre texto plano.
+El lenguaje Gobstones posee una secuencia didáctica bien definida que ha demostrado ser eficaz, pero el entorno de programación usado actualmente, aún cumpliendo las funciones de edición para las cuales fue creado, no refuerza activamente esta secuencia didáctica ni suple las necesidades de una comunidad creciente de usuarios. El presente trabajo busca desarrollar un \ile sobre un \textit{Editor Proyectivo}, haciendo uso de sus cualidades intrínsecas para facilitarle al alumno la comunicación de soluciones en términos de conceptos en lugar de trabajar sobre texto plano.
 \end{abstract}
 
 
@@ -10,7 +10,13 @@ En esta sección se detallan brevemente las características del lenguaje Gobsto
 
 \subsection{El lenguaje Gobstones}
 
-Gobstones\cite{Gobstones} [TODO: hablar sobre gobstones]
+Gobstones\cite{Gobstones} es un lenguaje de programación diseñado 
+
+\subsection{Entorno Integrado de Aprendizaje}
+
+Los entornos integrados de aprendizaje\cite{IntegratedLearningEnvironment} cubren un gran número de herramientas. En el presente trabajo al hablar de \textit{Entorno Integrado de Aprendizaje de Programación}, de ahora en más \ile (\textit{Integrated Learning Environment}), nos referiremos a una aplicación diseñada para la enseñaza de la programación, orientada a cumplir cierta estrategia didáctica y facilitar la creación de planes de estudio por parte del docente. 
+
+Es importante diferenciar al \ile de un \textit{IDE} (\textit{Integrated Development Environment}) ya que este último se enfoca en el desarrollo de programas, y por lo tanto posee funcionalidades que en ciertos contextos de aprendizaje pueden resultar perniciosas. Por ejemplo, es esperable que un \textit{IDE} provea mecanismos de depuración de código inspeccionando el estado del programa en una ejecución secuencial. Sin embargo, en un \ile esto puede ser considerado pernicioso dentro de ciertas estrategias didácticas, ya que permite al alumno buscar soluciones mediante fuerza bruta en lugar de utilizar las herramientas abstractas que se intentan transmitir.
 
 \subsection{Editores Proyectivos}
 
@@ -49,45 +55,48 @@ Entre los productos desarrollados utilizando MPS se encuentran: \textit{MetaR} \
 
 \section{Motivación}
 
-En el libro \textit{"Las bases conceptuales de la Programación. Una nueva forma de aprender a programar"}\cite{Gobstones} se presenta una secuencia didáctica bien detallada junto con el entorno \textit{PyGobstones}\cite{PyGobstones}, pero notamos que en el marco de una adopción cada vez mayor de esta didáctica, el entorno debe cubrir nuevas necesidades.
-
-
-\subsection{No sólo un editor, sino un Entorno Integral de Aprendizaje}
-
-Hasta el momento, \textit{PyGobstones} cumple su función de editor especializado
-
+En el libro \textit{"Las bases conceptuales de la Programación. Una nueva forma de aprender a programar"}\cite{Gobstones} se presenta una secuencia didáctica bien detallada junto con el entorno \textit{PyGobstones}\cite{PyGobstones}. Sin embargo notamos que, en el marco de una adopción cada vez mayor de esta secuencia didáctica, aparecen nuevas necesidades que el entorno actual no cubre o cubre solo parcialmente:
 
 \begin{itemize}
-  \item disponer de un ambiente que sea fácilmente extensible y posea una arquitectura que agilice la colaboración de la comunidad de Gobstones.
-  \item que el ambiente sea un refuerzo de la se secuencia didáctica, y no sólo una herramienta de edición.
-  \item utilizar tecnologías que posean un buen soporte y comunidad.
-  \item que el entorno sea sencillo de instalar
+  \item Disponer de un ambiente que sea facilmente extensible y posea una arquitectura que agilice la colaboración de la comunidad de Gobstones.
+  \item Utilizar tecnologías que posean un buen soporte.
+  \item Que el entorno sea sencillo de instalar.
+  \item Que el entorno constituya un refuerzo de la se secuencia didáctica, y no sólo una herramienta de edición.
+  \item Que se encuentre cosntruido sobre soluciones probadas y usadas, en lugar de implementar todos sus componentes desde cero.
 \end{itemize}
 
 
 \section{Propuesta}
 
-Se propone utilizar \textit{MPS Workbench} para implementar un \textit{Entorno Integral de Aprendizaje} porque cubre las necesidades antes mencionadas, dado que:
+Se propone desarrollar un \ile centrado en el lenguaje Gobstones. Para ello se utilizará \textit{MPS Workbench}, cubriendo las necesidades mencionadas en la sección anterior:
 
 \begin{itemize}
-  \item soporta tanto extensión de lenguaje como extensión del entorno mediante la creación de plugins que pueden no depender entre sí.
+  \item soporta tanto extensión de lenguaje como extensión del entorno mediante la creación de plugins.
   \item los features de lenguaje pueden ser activados y desactivados durante el uso del entorno para cumplir con la secuencia didáctica.
   \item es soportado por JetBrains, uno de los líderes mundiales en desarrollo de entornos de programación.
   \item el entorno sólo necesita Java Runtime Environment (siendo que se trabajará sobre la implementación de un intérprete Gobstones, con lo cual se vuelve innecesario contar con un compilador).
 \end{itemize}
 
-A su vez, la naturaleza proyectiva del entorno le permite al alumno concentrarse en el concepto que desea expresar al evitarle errores comunes de sintaxis. Además, el programa siempre se presenta al alumno con un formato estándar (bien indentado, secciones organizadas, etc), ayudándolo a incorporar más rápidamente estas buenas prácticas al reconocerlas como algo natural. Esto es así porque al principio el alumno no posee una noción de estilos \textit{correctos}, sino que se va formando a medida que es expuesto a ellos.
+Entendemos que naturaleza proyectiva de \textit{MPS} cataliza ciertas características deseables en un \ile:
 
-Además, mantiene las virtudes de la tecnología utilizada en la implementación original: multiplataforma, capacidad para una interfaz minimalista, capacidad para mantener la identidad gráfica de Gobstones
-
-En particular, esta implementación busca:
 \begin{itemize}
-  \item que el lenguaje refuerce la necesidad de buenos comentarios y la especificación del propósito y precondición de funciones y procedimientos
-  \item el uso de estilos sutiles que faciliten el reconocimiento estructuras repetidas; por ejemplo, coloreando nodos similares al que se encuentre debajo del cursor. Esto se vuelve útil a la hora de enseñar determinados conceptos, como la parametrización de procedimientos.
+  \item permite al alumno concentrarse en el concepto que desea expresar al reducir notablemente los posibles errores de sintaxis.
+  \item el programa siempre se presenta al alumno con un formato estándar (bien indentado, secciones organizadas, etc), ayudándolo a incorporar más rápidamente estas buenas prácticas al reconocerlas como algo natural. En otras palabras, el alumno no posee de antemano una noción de estilos \textit{correctos}, sino que se construye a medida que es expuesto a estos.
 \end{itemize}
 
-Todo esto siguiendo la filosofía de Gobstones y buscando mantener las virtudes de la implementación original (identidad gráfica, multiplataforma, interfaz de usuario minimalista, etc).
+
+
+En particular, de desea que el \ile posea las siguientes características:
+
+\begin{itemize}
+  \item una implementación de Gobstones
+  \item que incluya la idea de proyecto y ejercicio como mecanismos de organización de código.
+  \item que permita limitar los features de lenguaje que pueden ser usados para resolver cierto ejercicio.
+  \item que reconozca la especificación del propósito y precondición de funciones y procedimientos (que no sean un comentario más en el código).
+  \item que el alumno programe sobre un editor proyectivo
+  \item que provea autocompletado, atajos de teclado y navegación de código entre otras funcionalidades comunmente encontradas en editores (siempre y cuando no vayan en contra de la estrategia didáctica)
+  \item que provea un mecanismo de integración con otras herramientas que puedan desarrollarse en el futuro, mediante la creación de plugins.
+\end{itemize}
 
 \section{Plan de trabajo}
 
-[TODO: transcribir los sprints planificados en waffle]
