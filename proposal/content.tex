@@ -1,20 +1,17 @@
 \begin{abstract}
-El lenguaje Gobstones posee una secuencia didáctica bien definida que ha demostrado ser eficaz, pero el entorno de programación usado actualmente, aún cumpliendo las funciones de edición para las cuales fue creado, no refuerza activamente esta secuencia didáctica ni suple las necesidades de una comunidad creciente de usuarios. El presente trabajo busca desarrollar un \ile sobre un \textit{Editor Proyectivo}, haciendo uso de sus cualidades intrínsecas para facilitarle al alumno la comunicación de soluciones en términos de conceptos en lugar de trabajar sobre texto plano.
+El lenguaje Gobstones posee una secuencia didáctica bien definida que ha demostrado ser eficaz tanto en cursos iniciales universitarios como en escuelas secundarias. En el marco de una comunidad creciente de usuarios, proponemos el desarrollo de un \textit{Entorno Integrado de Aprendizaje de Programación} a partir de una implementación de Gobstones sobre un \textit{Editor Proyectivo}, haciendo uso de sus cualidades intrínsecas para facilitarle al alumno la comunicación de soluciones en términos de conceptos en lugar de trabajar sobre texto plano, reduciendo así elementos superfluos que pudieran entorpecer la secuencia didáctica.
 \end{abstract}
 
 
 \section{Introducción}
 
-En esta sección se detallan brevemente las características del lenguaje Gobstones y de los editores proyectivos. Luego se presenta un caso particular de ambiente de desarrollo de lenguajes basados en tecnología proyectiva, que será utilizado para implementar el entorno propuesto.
+En esta sección se detallan brevemente las características del lenguaje Gobstones, se determina qué se entiende por \textit{Entorno Integrado de Aprendizaje de Programación} y se da una introducción al funcionamiento de los editores proyectivos.
 
 
 \subsection{El lenguaje Gobstones}
 
-Citando al sitio oficial de Gobstones\cite{Gobstones}:
-\begin{quote}
-Gobstones es un lenguaje de programación ideado por Pablo E. Martínez López y Eduardo A. Bonelli en el año 2008 pensando para satisfacer las necesidades de los alumnos de la reciente carrera Tecnicatura Universitaria en Programación Informática que se dicta en la Universidad Nacional de Quilmes. Este lenguaje de programación fue pensado en el marco de un primer año de una carrera informática para aquellas personas que no tienen conocimientos previos de programación, basándose en tres elementos fundamentales que forman parte de la filosofía de Gobstones: el desarrollo de la abstracción, el aprendizaje de la división de tareas y la obtención de pautas de estilo que favorezcan la posterior interpretación de los programas generados, todo manteniendo un alto grado de simplicidad conceptual y eliminando elementos superfluos que claramente complican el aprendizaje inicial
-\end{quote}
-
+Gobstones es un lenguaje de programación que fue diseñado para la enseñanza teniendo como elementos fundacionales de su filosofía: el desarrollo de la abstracción, el aprendizaje de la división de tareas y la obtención de pautas de estilo que favorezcan la posterior interpretación de los programas generados, todo manteniendo un alto grado de simplicidad conceptual y eliminando elementos superfluos que claramente complican el aprendizaje inicial. 
+Actualmente es soportado por diversas herramientas, entre las cuales se destaca el editor \cite{PyGobstones}
 
 \subsection{Entorno Integrado de Aprendizaje}
 
@@ -52,36 +49,11 @@ Esto tiene varias consecuencias:
 \end{itemize}
 
 
-\subsection{MPS Workbench}
-
-MPS (Meta programming System)\cite{MPS} es un ambiente de trabajo orientado al desarrollo de lenguajes específicos de dominio, de la empresa JetBrains, basado en las ideas de Fowler; hoy en día se posiciona como uno de los referentes más importantes en editores proyectivos\cite{LanguageModularity}. 
-Entre los productos desarrollados utilizando MPS se encuentran: \textit{MetaR} \cite{MetaR}, un ambiente especializado en biomedicina computacional; \textit{mbeddr} \cite{mbeddr}, un ambiente orientado a software embebido.
-
 \section{Motivación}
 
-En el libro \textit{"Las bases conceptuales de la Programación. Una nueva forma de aprender a programar"}\cite{Gobstones} se presenta una secuencia didáctica bien detallada junto con el entorno \textit{PyGobstones}\cite{PyGobstones}. Sin embargo notamos que, en el marco de una adopción cada vez mayor de esta secuencia didáctica, aparecen nuevas necesidades que el entorno actual no cubre o cubre solo parcialmente:
+En el libro \textit{"Las bases conceptuales de la Programación. Una nueva forma de aprender a programar"}\cite{Gobstones} se presenta una secuencia didáctica bien detallada junto con el entorno \textit{PyGobstones}\cite{PyGobstones}. Notamos que, en el marco de una adopción cada vez mayor este lenguaje, puede resultar útil complementar las herramientas existentes con otras que refuercen activamente su secuencia didáctica, acercando al alumno a las abstracciones que se desean transmitir.
 
-\begin{itemize}
-  \item Disponer de un ambiente que sea facilmente extensible y posea una arquitectura que agilice la colaboración de la comunidad de Gobstones.
-  \item Utilizar tecnologías que posean un buen soporte.
-  \item Que el entorno sea sencillo de instalar.
-  \item Que el entorno constituya un refuerzo de la se secuencia didáctica, y no sólo una herramienta de edición.
-  \item Que se encuentre cosntruido sobre soluciones probadas y usadas, en lugar de implementar todos sus componentes desde cero.
-\end{itemize}
-
-
-\section{Propuesta}
-
-Se propone desarrollar un \ile centrado en el lenguaje Gobstones. Para ello se utilizará \textit{MPS Workbench}, cubriendo las necesidades mencionadas en la sección anterior:
-
-\begin{itemize}
-  \item soporta tanto extensión de lenguaje como extensión del entorno mediante la creación de plugins.
-  \item los features de lenguaje pueden ser activados y desactivados durante el uso del entorno para cumplir con la secuencia didáctica.
-  \item es soportado por JetBrains, uno de los líderes mundiales en desarrollo de entornos de programación.
-  \item el entorno sólo necesita Java Runtime Environment (siendo que se trabajará sobre la implementación de un intérprete Gobstones, con lo cual se vuelve innecesario contar con un compilador).
-\end{itemize}
-
-Entendemos que naturaleza proyectiva de \textit{MPS} cataliza ciertas características deseables en un \ile:
+A su vez, se reconoce que los editores proyectivos poseen ciertas características deseables en una herramienta de enseñanza:
 
 \begin{itemize}
   \item permite al alumno concentrarse en el concepto que desea expresar al reducir notablemente los posibles errores de sintaxis.
@@ -89,15 +61,15 @@ Entendemos que naturaleza proyectiva de \textit{MPS} cataliza ciertas caracterí
 \end{itemize}
 
 
+\section{Propuesta}
 
-En particular, de desea que el \ile posea las siguientes características:
+Se propone desarrollar un \ile centrado en el lenguaje Gobstones a partir de un \textit{Editor Proyectivo}:
 
 \begin{itemize}
-  \item una implementación de Gobstones
+  \item que incluya una implementación de Gobstones
   \item que incluya la idea de proyecto y ejercicio como mecanismos de organización de código.
-  \item que permita limitar los features de lenguaje que pueden ser usados para resolver cierto ejercicio.
+  \item que permita limitar las herramientas de lenguaje que pueden ser usados para resolver cierto ejercicio.
   \item que reconozca la especificación del propósito y precondición de funciones y procedimientos (que no sean un comentario más en el código).
-  \item que el alumno programe sobre un editor proyectivo
   \item que provea autocompletado, atajos de teclado y navegación de código entre otras funcionalidades comunmente encontradas en editores (siempre y cuando no vayan en contra de la estrategia didáctica)
   \item que provea un mecanismo de integración con otras herramientas que puedan desarrollarse en el futuro, mediante la creación de plugins.
 \end{itemize}
@@ -115,6 +87,5 @@ Se organiza el desarrollo en sprints con duración de dos semanas.
   \item{Sprint 5} Subproyecto de deploy, generación del entorno. Se agrega soporte para estructura de proyecto y ejercicio.
   \item{Sprint 6} Ejercicios configurables con nivel de lenguaje.
 \end{itemize} 
-
 
 
