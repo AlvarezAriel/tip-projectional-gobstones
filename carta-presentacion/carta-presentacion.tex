@@ -1,0 +1,72 @@
+\documentclass[10pt,stdletter]{newlfm}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}    
+\usepackage[spanish]{babel} 
+\usepackage{dashrule}
+
+\newcommand{\firma}[1]{%
+  \vspace{2cm}
+  \parbox{6cm}{
+    \centering
+    \hdashrule{6cm}{1pt}{1pt}\\
+     #1
+  }\textbf{}
+}
+
+\newsavebox{\Luiuc}
+\sbox{\Luiuc}{%
+	\parbox[b]{1.75in}{%
+		\vspace{0.5in}%
+		\includegraphics[scale=0.3]
+		{assets/logo-unq.jpg}%
+	}%
+}%
+\makeletterhead{Uiuc}{\Lheader{\usebox{\Luiuc}}}
+
+\newlfmP{headermarginskip=10pt}
+\newlfmP{sigsize=50pt}
+\newlfmP{dateskipafter=10pt} 
+\newlfmP{bottommarginskip=5pt}
+
+\dateset{Bernal, \today}
+
+\def \tipTitulo     {Desarrollo de un Entorno Integrado de Aprendizaje de Programación utilizando Editores Proyetivos siguiendo la didáctica de Gobstones}
+\def \tipDirector   {Ing. Nicolás Passerini}
+\def \tipCodirector {Ing. Javier Fernandes}
+\def \alumnoLegajo  {29905}
+\def \alumnoNombre  {Ariel Alvarez}
+\def \cierre {%
+    Sin otro particular saludan antentamente,
+    \begin{center}
+      \firma{\alumnoNombre \\ Legajo: \alumnoLegajo}\\
+      \firma{\tipDirector}\\
+      \firma{\tipCodirector}\\ 
+    \end{center}
+}
+
+\greetto{
+Al Director de la Carrera de \\
+Tecnicatura Universitaria en Programación Informática del \\
+Departamento de Ciencia y Tecnología de la \\
+Universidad Nacional de Quilmes, \\
+Ing. Leonardo Gassman
+}
+
+\begin{document}
+\begin{newlfm}
+
+Asunto: Propuesta de trabajo de inserción profesional.\\
+
+Me dirijo a Usted para presentar mi propuesta de Trabajo de Inserción Profesional de la carrera de Tecnicatura Universitaria en Programación Informática. 
+El tema del trabajo es: \textit{"\tipTitulo"}, y será dirigido por el \tipDirector y co-dirigido por el \tipCodirector.
+
+Se adjunta con esta nota la justificación e importancia del tema seleccionado, las etapas del trabajo, el lugar donde se ha de realizar el mismo, el plan de trabajo y su cronograma así como las fuentes iniciales de información y referencia, según el reglamento vigente.
+
+\cierre
+\end{newlfm}
+
+
+\end{document}
+
+
