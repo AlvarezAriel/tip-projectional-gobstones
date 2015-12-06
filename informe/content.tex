@@ -22,9 +22,91 @@ De esta manera, el editor solamente permite ingresar construcciones sintácticam
 
 En la sección \textit{II} se presenta la tecnología a usar y en la sección \textit{III} se describe el desarrollo del modelo conceptual del lenguaje Gobstones en términos de esa tecnología. En la sección \textit{IV} se muestra cómo este modelo conceptual se proyecta sobre el editor. Una vez creado el editor, se procede a implementar el intérprete del lenguaje y la renderización de los tableros inicial y final. Teniendo el lenguaje básico funcionando, se trabaja en la sección \textit{V} sobre el sistema de inferencia de tipos, orientado a asistir al estudiante mediante mensajes de error legibles. En la sección \textit{VI} se analizan problemas típicos de los editores proyectivos y se busca mejorar la experiencia de usuario aplicando diferentes técnicas que facilitan una edición más familiar, es decir, más cercana a una expriencia de edición de texto. Luego en la sección \textit{VII} se extiende el proyecto agregando un \textit{lenguaje de definición de ejercicios}, que constituye un lenguaje específico de dominio cuya finalidad es permitirle al docente plantear ejercicios, desde título y descripción hasta restriciones de features de lenguaje y análisis de código. Por último en la sección \textit{VIII} se cierra el informe con una conclusión e ideas sobre el camino que el proyecto pudiera seguir a futuro.
 
-\section{Una implementación de editor proyectivo: Meta Programming System}
+\section{Tecnología proyectiva a usar}
+
+De los entornos proyectivos existentes hoy en día, se decide utilizar el workbench Meta Programming System (MPS)\cite{MPS} de la empresa Jetbrains, en su versión 3.3.
+Se trata de un entorno orientado al desarrollo de lenguajes maduro y estable, sobre el cual se realizaron exitosamente diferentes proyectos, entre los cuales se cuentan:
+\begin{itemize}
+\item MetaR\cite{MetaR}: un IDE que utiliza el lenguaje R para facilitar el análisis de datos biológicos.
+\item mbeddr\cite{mbeddr}: un IDE orientado a la programación sobre hardware, que extiende el lenguaje C y soporta verificación formal, máquinas de estado y variabilidad en líneas de productos, entre otros.
+\item YouTrack\cite{YouTrack}: un gestor de proyectos.
+\end{itemize}
+
+MPS brinda un DSL para la definición de conceptos puros del lenguaje a implementar, y sobre estos la posibilidad de describir cómo este modelo se renderizará, comportamiento específico para cada concepto, sistema de tipos, etc. Al ser todas estas incumbencias transversales a los conceptos, se organizan en forma de aspectos.
+Los conceptos se comportan de manera similar a una clase en programación orientada a objetos, en tanto y en cuanto admiten extensión por herencia e implementación de interfaces. A su vez, estas construcciones determinan las instancias de nodos que compondrán un programa, comparables a los nodos de un árbol de sintaxis abstracta.
+
+A partir de los lenguajes definidos en esta herramienta es posible generar un IDE autónomo o pluguins para IDEs pre-existentes.
 
 \section{Modelo conceptual del lenguaje Gobstones}
+
+Se comienza modelando el lenguaje Gobstones en términos de conceptos. Como puede observarse en el ejemplo de \fig{ifElse_concept}, para cada concepto pueden definirse sus posibles nodos hijo, propiedades y referencias a otros nodos. Se organizan en una jerarquía, pudiendo extender de otros conceptos e implementar interfaces. En este caso, puede verse que el concepto \textit{IfElseStatement} extiende del concepto abstracto \textit{Statement}, y sus posibles hijos son una expresión, que será la condición de la alternativa, un bloque de sentencias para el caso en que la condición sea verdadera, y otro bloque de sentencias para el caso contrario.
+
+\begin{figure}[hb]
+\centering
+\includegraphics[width=0.4\textwidth]{assets/ifElse_concept}
+\caption{Definición del concepto para la alternativa condicional}
+\label{fig:ifElse_concept}
+\end{figure}
+
+Los conceptos más importantes serán \textit{Statement}, que denota un comando, y \textit{Expression} que denota una expresión que puede ser evaluada. De manera simplificada, tenemos que el primer nivel de la jerarquía de sentencias queda dado por:
+
+\Tree [.Statement 
+    Alternative 
+    Loop
+    Procedure
+    Assignment
+].Statement 
+\bigskip
+
+Y el primer nivel de la jerarquía de expresiones se compone de:
+
+\Tree [.Expression 
+    BinaryOperation 
+    Value 
+    Function
+].Expression 
+\bigskip
+
+Además, se tiene una jerarquía separada para la definición de rutinas:
+
+\Tree [.RoutineDeclaration 
+    ProcedureDeclaration 
+    FunctionDeclaration
+].RoutineDeclaration 
+\bigskip
+
+Decimos entonces que un programa gobstones básico se encuentra dado por una colección de sentencias y una colección de definición de rutinas.
+
+Donde el siguiente programa:
+
+\begin{lstlisting}[frame=single] 
+
+program {
+  Poner(Rojo)
+}
+
+function verdadero(){
+  return(True)
+}
+    
+\end{lstlisting}
+
+Corresponde a un modelo conceptual con la estructura:
+
+\Tree [.Program 
+    [.StatementsList
+      [.NativeProcedure
+        Red        
+      ].NativeProcedure
+    ].StatementsList
+    [.FunctionDeclaration
+      [.StatementsList
+        Empty
+      ].StatementsList
+      True
+    ].FunctionDeclaration
+].Program 
+\bigskip
 
 \section{Implementación del Editor}
 
