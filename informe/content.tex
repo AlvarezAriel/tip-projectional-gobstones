@@ -113,9 +113,13 @@ Corresponde a un modelo conceptual con la estructura:
 
 Una vez completado el modelo conceptual con los elementos del lenguaje Gobstones, según la especificación de \textit{Las bases conceptuales de la Programación: Una nueva forma de aprender a programar}\cite{Gobstones}, se procede a definir el aspecto de editor para cada uno de ellos. Para ello, se hace uso de otro DSL provisto por MPS, que permite definir los layouts en los cuales los conceptos se renderizarán.
 
+La finalidad de este editor es proveer una interfaz de usuario que brinde una experiencia similar a la edición de texto, pero permitiendo únicamente construcciones válidas. Para lograr esto, internamente se hace una distinción entre nodos ligados al programa, es decir, nodos que representan conceptos que se escribieron exitosamente y forman parte del programa que se está escribiendo, y nodos en proceso de creación. 
+Cuando el usuario comienza a editar un nodo, internamente se crea una instancia de un editor que se encarga de crear el nodo correspondiente a aquello que se está escribiendo, siempre y cuando logre relacionarlo con un concepto válido. 
+De esta manera, funcionalidades como el autocompletado son responsabilidad de la instancia del editor, mientras que otras como los estilos, sugerencias, alertas, etc. son aplicadas sobre las instancias de los nodos de cada concepto.
+
 \begin{figure}[hb]
 \centering
-\includegraphics[width=0.4\textwidth]{assets/function_declaration_editor}
+\includegraphics[width=0.48\textwidth]{assets/function_declaration_editor}
 \caption{Definición del aspecto de edición para el concepto de declaración de función}
 \label{fig:function_declaration_editor}
 \end{figure}
@@ -129,7 +133,7 @@ Esta definición provee un \textit{binding bidireccional} entre el modelo concep
 
 \begin{figure}[hb]
 \centering
-\includegraphics[width=0.4\textwidth]{assets/editor_binary_operation}
+\includegraphics[width=0.48\textwidth]{assets/editor_binary_operation}
 \caption{Definición del aspecto de edición para el concepto abstracto de operación binaria}
 \label{fig:editor_binary_operation}
 \end{figure}
@@ -144,13 +148,81 @@ El diseño del editor busca respetar los principios de la programación orientad
 ].BinaryOperation 
 \bigskip
 
+Por otro lado, el coloreado de sintaxis, identación, retorno de carro y demás detalles estéticos se determinan mediante una planilla de estilos, cuidando mantener consistencia entre los diferentes elementos del lenguaje. Por ejemplo, si bien la implementación interna de llamadas a procedimientos nativos y llamadas a procedimientos de usuario son diferentes, ambos comparten los mismos estilos.
+
 
 
 \section{Implementación del Intérprete}
 
+Una vez definido el editor proyectivo, debemos ser capaces de ejecutar el programa. Una opción para llevar esto a cabo  es compilar o traducir a otro lenguaje que luego será ejecutado, es decir, generando de código; otra alternativa es interpretar el programa sin generar código. La generación de código hubiera implicado depender de un compilador o una VM específica, y por consiguiente complejizado la instalación del producto final (ya sea dependiendo de que la máquina donde se fuera a usar la herramienta final poseyera este compilador, o al verse obligado a empaquetar un compilador o implementación de VM junto con el instalador del entorno), con lo cual se optó por desarrollar un intérprete a partir del ambiente de nodos de conceptos.
+
+En esta etapa se hace uso del aspecto de comportamiento, que permite agregar métodos e inicializaciones a los conceptos, utilizando un DSL con una sintaxis similar a Java. Se define en el concepto abstracto \textit{Statement} un método \textit{interpret} que toma como argumento un estado del programa, y retorna otro estado del programa. Por defecto, la implementación de \textit{interpret} retorna el estado sin cambiarlo, como se observa en \fig{behavior_statement}
+
+\begin{figure}[hb]
+\centering
+\includegraphics[width=0.48\textwidth]{assets/behavior_statement}
+\caption{Comportamiento del concepto abstracto Statement}
+\label{fig:behavior_statement}
+\end{figure}
+
+De esta manera, se tiene un patrón \textit{Composite}\cite{Gamma} en el cual cada sentencia realiza su transformación sobre el estado y delega la interpretación en sentencias hijas de ser necesario. Por ejemplo, en la \fig{behavior_ifElse} se puede observar cómo la interpretación de la alternativa condicional está dada por una evaluación de su condición, seguida de la interpretación de alguno de sus bloques según esa condición haya resultado verdadera o falsa.
+
+\begin{figure}[hb]
+\centering
+\includegraphics[width=0.5\textwidth]{assets/behavior_ifElse}
+\caption{Interpretación de la alternativa condicional}
+\label{fig:behavior_ifElse}
+\end{figure}
+
+La evaluación de esta condición es posible porque, de manera similar a como se implementa la interpretación para cada sentencia, cada \textit{Expression} entiende el mensaje \textit{reduce}, que toma como argumento un estado del programa y retorna una instancia de \textit{InterpreterValue}, la cual encapsula el valor resultante y contiene información del tipo de este valor. 
+
+\subsection{Contexto de ejecución}
+
+El estado del programa que es necesario para interpretar sentencias y evaluar expresiones está dado por dos pilas: una pila de tableros (instancias de la clase de dominio \textit{Board}) y una pila de contextos, donde se entiende como contexto al conjunto de variables a las que se pueden acceder en un momento dado.
+
+Al implementar rutinas, se debió tomar la decisión entre una evaluación \textit{Call By Name} o \textit{Call by Value}\cite{DowekL11} de los argumentos. Para mantener una implementación sencilla, se decidió utilizar \textit{Call by Value}, evaluando primero los argumentos de las rutinas antes de crear el nuevo contexto. 
+Cada vez que se invoca un procedimiento, el contexto que se estaba usando se apila y se crea un nuevo contexto con variables asociadas al resultado de evaluar cada argumento, si los hubiere. 
+
+Cabe aclarar que una implementación \textit{Call By Name} podría llevarse a cabo inicializando las variables en el nuevo contexto con expresiones asociadas al contexto donde fueron definidas, en lugar de asociarlas a valores puntuales. Es decir, en lugar de tener un \textit{InterpreterValue}, se podría haber creado una \textit{ContextAwareExpression}, que sólo se evaluaría en caso de ser requerida. Una problemática adicional de esta implementación radica en controlar los posibles \textit{memory leaks} que se generan al guardar referencias a muchos contextos y guardar el resultado de la primer evaluación para no recalcularlo en evaluaciones posteriores.
+
+Volviendo a la implementación actual, para el caso de las funciones no sólo se debe apilar el contexto de variables, sino que también debe clonarse el estado existente del tablero y apilarse, ya que en Gobstones las funciones no realizan efectos de lado, sino que todo efecto aplicado al tablero desaparece una vez que la función retorna un valor. Esto queda claro en \fig{behavior_function_invocation}, donde la invocación de función primero evalúa sus argumentos, crea un \textit{IsolatedContext} con esos argumentos inicializados, y luego evalúa su cuerpo dentro de ese contexto.
+
+\begin{figure}[hb]
+\centering
+\includegraphics[width=0.48\textwidth]{assets/behavior_function_invocation}
+\caption{Interpretación y cambio de contexto en la invocación de una función}
+\label{fig:behavior_function_invocation}
+\end{figure}
+
+\subsection{Clases de dominio de Gobstones}
+
+En un subproyecto separado del del editor, llamado \textit{JavaGobstones}, se definen las clases de dominio de Gobstones: tablero, celdas, bolitas, colores, etc, en una versión proyectiva del lenguaje Java. Estas clases tienen el comportamiento específico del dominio y permiten mantener el estado del programa en tiempo de interpretación. Las interpretaciones de los procedimientos y funciones nativos de Gobstones interactúan directamente con este modelo, de forma tal que, por ejemplo, la interpretación del procedimiento \textit{Poner(<color>)} es un mensaje \textit{addStones(Color color, int quantity)} que se le envía al tablero.
+
 \subsection{Edición del tablero inicial}
 
+Para editar el tablero inicial que constituye el input del programa gobstones, se crea un editor específico con un \textit{layout table} como se observa en \fig{initial_board}. Este tablero se utiliza para inicializar la pila de tableros del estado del programa y puede definirse en un archivo virtual separado del del programa. 
+
+La filosofía detrás de este diseño es que cada componente del programa, desde su tablero inicial y su código hasta su tablero final son representados como archivos. Esto ayuda a mantener una interfaz de usuario minimalista y una forma de interacción consistente para con los diferentes elementos del entorno.
+
+\begin{figure}[hb]
+\centering
+\includegraphics[width=0.3\textwidth]{assets/initial_board}
+\caption{Tablero inicial}
+\label{fig:initial_board}
+\end{figure}
+
+
 \subsection{Renderización del tablero final}
+
+El tablero final es una vista con \textit{binding unidireccional} que renderiza el estado del tablero que resulta de interpretar el programa gobstones. Esta vista no está construida con componentes pre-existentes en MPS, sino que se extendió el editor de MPS creando un componente de Swing\cite{swing} que toma un \textit{Board} y lo renderiza como se aprecia en la \fig{result_board}
+
+\begin{figure}[hb]
+\centering
+\includegraphics[width=0.48\textwidth]{assets/result_board}
+\caption{Tablero final}
+\label{fig:result_board}
+\end{figure}
+
 
 \section{Inferencia de tipos}
 
