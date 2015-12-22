@@ -48,7 +48,8 @@ Se comenzó modelando el lenguaje Gobstones en términos de conceptos. Como pued
 \label{fig:ifElse_concept}
 \end{figure}
 
-Los conceptos más importantes son \textit{Statement}, que denota un comando, y \textit{Expression} que denota una expresión que puede ser evaluada. De manera simplificada, tenemos que el primer nivel de la jerarquía de sentencias quedó dado por:
+Los conceptos más importantes son \textit{Statement}, que denota un comando, y \textit{Expression} que denota una expresión que puede ser evaluada. De manera simplificada, tenemos que el primer nivel de la jerarquía de sentencias quedó dado por
+\vspace{8mm}:
 
 \Tree [.Statement 
     Alternative 
@@ -58,7 +59,8 @@ Los conceptos más importantes son \textit{Statement}, que denota un comando, y 
 ].Statement 
 \bigskip
 
-Y el primer nivel de la jerarquía de expresiones se compone de:
+Y el primer nivel de la jerarquía de expresiones se compone de
+\vspace{8mm}:
 
 \Tree [.Expression 
     BinaryOperation 
@@ -67,8 +69,8 @@ Y el primer nivel de la jerarquía de expresiones se compone de:
 ].Expression 
 \bigskip
 
-Además, se tiene una jerarquía separada para la definición de rutinas:
-
+Además, se tiene una jerarquía separada para la definición de rutinas
+\vspace{8mm}:
 \Tree [.RoutineDeclaration 
     ProcedureDeclaration 
     FunctionDeclaration
@@ -91,7 +93,8 @@ function verdadero(){
     
 \end{lstlisting}
 
-Corresponde a un modelo conceptual con la estructura:
+Corresponde a un modelo conceptual con la estructura
+\vspace{8mm}:
 
 \Tree [.Program 
     [.StatementsList
@@ -127,8 +130,7 @@ Esta definición provee un \textit{binding bidireccional} entre el modelo concep
 \imagen{editor_binary_operation}{Definición del aspecto de edición para el concepto abstracto de operación binaria}
 
 
-El diseño del editor buscó respetar los principios de la programación orientada a objetos. Un claro ejemplo son los subconceptos de \textit{BinaryOperation} tales como los operadores lógicos y aritméticos, que reutilizan una misma vista. Para lograr esto se extrapola el clásico patrón \textit{Template Method}\cite{Gamma}, donde el aspecto de edición del concepto abstracto \textit{BinaryOperation} define el layout de \fig{editor_binary_operation}, y cada subconcepto implementa un alias distinto, correspondiente con el símbolo de su operación.
-
+El diseño del editor buscó respetar los principios de la programación orientada a objetos. Un claro ejemplo son los subconceptos de \textit{BinaryOperation} tales como los operadores lógicos y aritméticos, que reutilizan una misma vista. Para lograr esto se extrapola el clásico patrón \textit{Template Method}\cite{Gamma}, donde el aspecto de edición del concepto abstracto \textit{BinaryOperation} define el layout de \fig{editor_binary_operation}, y cada subconcepto implementa un alias distinto, correspondiente con el símbolo de su operación. \vspace{8mm}\\
 \Tree [.BinaryOperation
   Plus(alias='+')
   Div(alias='/')
@@ -136,11 +138,13 @@ El diseño del editor buscó respetar los principios de la programación orienta
 ].BinaryOperation 
 \bigskip
 
-Por otro lado, el coloreado de sintaxis, identación, retorno de carro y demás detalles estéticos se determinan mediante una planilla de estilos, cuidando mantener consistencia entre los diferentes elementos del lenguaje. Por ejemplo, si bien la implementación interna de llamadas a procedimientos nativos y llamadas a procedimientos de usuario son diferentes, ambos comparten los mismos estilos.
+Por otro lado, el coloreado de sintaxis, identación, retorno de carro y demás detalles estéticos se determinan mediante una planilla de estilos, cuidando mantener consistencia entre los diferentes elementos del lenguaje. Por ejemplo, si bien la implementación interna de llamadas a procedimientos nativos y llamadas a procedimientos de usuario son diferentes, ambos comparten los mismos estilos \fig{editor-style}.
+
+\imagen{editor-style}{Definición de estilos para la invocación de procedimientos}
 
 Se puede apreciar en \fig{sandbox-editor} que el editor resultante incluye funcionalidades como:
 \begin{itemize}
-\strongitem{Autocompletado inteligente} sólo autocompleta con elementos coherentes con el contexto. En el ejemplo sólo autocompleta con sentencias y no expresiones, ya que estas últimas no cumplen propósito alguno en el cuerpo del procedimiento.
+\strongitem{Autocompletado inteligente} solo autocompleta con elementos coherentes con el contexto. En el ejemplo solo autocompleta con sentencias y no expresiones, ya que estas últimas no cumplen propósito alguno en el cuerpo del procedimiento.
 \strongitem{Coloreado} Se colorean palabras claves, identificadores, etc. Nótese que los procedimientos y funciones mantienen el mismo color tanto el la declaración como en la invocación, y se diferencian las rutinas nativas de las creadas por el usuario con el uso de negrita en la fuente.
 \strongitem{Colapsado de bloques} se pueden colapsar procedimientos y funciones, con el objetivo de facilitar la legibilidad del programa como un todo.
 \strongitem{Autoidentación} Las sentencias que se agregan son identadas automáticamente.
@@ -182,9 +186,9 @@ El estado del programa que es necesario para interpretar sentencias y evaluar ex
 Al implementar rutinas, se debió tomar la decisión entre una evaluación \textit{Call By Name} o \textit{Call by Value}\cite{DowekL11} de los argumentos. Para mantener una implementación sencilla, se decidió utilizar \textit{Call by Value}, evaluando primero los argumentos de las rutinas antes de crear el nuevo contexto. 
 Cada vez que se invoca un procedimiento, el contexto que se estaba usando se apila y se crea un nuevo contexto con variables asociadas al resultado de evaluar cada argumento, si los hubiere. 
 
-Cabe aclarar que una implementación \textit{Call By Name} podría llevarse a cabo inicializando las variables en el nuevo contexto con expresiones asociadas al contexto donde fueron definidas, en lugar de asociarlas a valores puntuales. Es decir, en lugar de tener un \textit{InterpreterValue}, se podría haber creado una \textit{ContextAwareExpression}, que sólo se evaluaría en caso de ser requerida. La complejidad extra de esta implementación radica en controlar los posibles \textit{memory leaks} que se pudieran generar al guardar referencias a muchos contextos y guardar el resultado de la primer evaluación para no recalcularlo en evaluaciones posteriores.
+Cabe aclarar que una implementación \textit{Call By Name} podría llevarse a cabo inicializando las variables en el nuevo contexto con expresiones asociadas al contexto donde fueron definidas, en lugar de asociarlas a valores puntuales. Es decir, en lugar de tener un \textit{InterpreterValue}, se podría haber creado una \textit{ContextAwareExpression}, que únicamente se evaluaría en caso de ser requerida. La complejidad extra de esta implementación radica en controlar los posibles \textit{memory leaks} que se pudieran generar al guardar referencias a muchos contextos y guardar el resultado de la primer evaluación para no recalcularlo en evaluaciones posteriores.
 
-Volviendo a la implementación actual, para el caso de las funciones no sólo se debe apilar el contexto de variables, sino que también debe clonarse el estado existente del tablero y apilarse, ya que en Gobstones las funciones no realizan efectos de lado, sino que todo efecto aplicado al tablero desaparece una vez que la función retorna un valor. Esto queda claro en \fig{behavior_function_invocation}, donde la invocación de función primero evalúa sus argumentos, crea un \textit{IsolatedContext} con esos argumentos inicializados, y luego evalúa su cuerpo dentro de ese contexto.
+Volviendo a la implementación actual, para el caso de las funciones no solo se debe apilar el contexto de variables, sino que también debe clonarse el estado existente del tablero y apilarse, ya que en Gobstones las funciones no realizan efectos de lado, sino que todo efecto aplicado al tablero desaparece una vez que la función retorna un valor. Esto queda claro en \fig{behavior_function_invocation}, donde la invocación de función primero evalúa sus argumentos, crea un \textit{IsolatedContext} con esos argumentos inicializados, y luego evalúa su cuerpo dentro de ese contexto.
 
 \imagen{behavior_function_invocation}{Interpretación y cambio de contexto en la invocación de una función}
 
@@ -215,24 +219,105 @@ El tablero final es una vista con \textit{binding unidireccional} que renderiza 
 
 \section{Chequeo de tipos}\label{chequeo}
 
-Para implementar el chequeo de tipos se tomó como base el trabajo de inserción profesional de \textit{Federico A. Sawady O’Connor} llamado \textit{Formalización e implementación de un sistema de tipos para el lenguaje de programación Gobstones (UNQ 2012)}, donde se presentan las reglas de inferencia de tipos necesarias para implementar los chequeos de tipos en Gobstones. 
+Para implementar el chequeo de tipos se tomó como base el trabajo de inserción profesional de \textit{Federico A. Sawady O’Connor} titulado \textit{Formalización e implementación de un sistema de tipos para el lenguaje de programación Gobstones (UNQ 2012)}, donde se presentan las reglas de inferencia de tipos necesarias para implementar los chequeos de tipos en Gobstones. 
 Tomando las reglas puras como base, se implementaron las reglas en MPS dentro del aspecto de sistema de tipos \textit{typesystem}. Por ejemplo, la regla de tipado de las operaciones aritméticas queda denotada por \textit{typeof\_IntegerOperation} en \fig{rule_operation}.
+En la \fig{type-check-example} se ejemplifica un error durante el chequeo de tipos, el cual se muestra como un error legible en castellano.
 
 \imagen{rule_operation}{Regla de inferencia de tipos para operaciones aritméticas}
+\imagen{type-check-example}{Ejemplo de alerta durante el chequeo de tipos}
 
+Además de las reglas de inferencia, es posible crear chequeos manuales por fuera del sistema de tipos. Esto fue de utilidad a la hora de validar que los nombres de procedimientos comiencen con mayúscula y los nombres de funciones con minúscula.
 
-
+\bigskip
 \section{Mejorando la experiencia de Usuario}\label{usabilidad}
 
-\subsection{Edición de operaciones binarias}
+Mantener una experiencia cercana al texto fue uno de los mayores desafíos durante el desarrollo. Por defecto, la edición requiere una escritura en orden prefijo, ya que, por ejemplo, cada operador es padre de sus operandos, y es necesario primero definir la isntancia del nodo padre antes de poder determinar sus hijos.
+Es decir, al escribir $1+2$ primero es necesario escribir el $+$ y luego se generará la estructura para completar los hijos de izquierda y derecha $\_ + \_$. Sin embargo, esta notación puede resultar incómoda y particularmente antinatural en un curso introductorio a la programación, por lo cual surge la necesidad de permitir una notación infija.
 
-\subsection{Borrado de nodos}
+Para llevar esto a cabo se declaran acciones de transformación y reemplazo de nodos, para las cuales se declaran condiciones disparadoras. 
+Volviendo al ejemplo de las operaciones aritméticas (o, en general, de operadores binarios), se tiene que se comienza a escribir
+\vspace{8mm}:
 
-\section{Lenguaje de Definición de Ejercicios}\label{proyecto}
+\Tree [.1
+  +
+].1
+\bigskip
+
+
+
+Normalmente el editor buscaría reconocer al $+$ como parte de cierto identificador o como posible hijo de $1$, pasando a un estado de error, como se ejemplifica en \fig{aritmetic-operator}
+
+\imagen{aritmetic-operator}{Edición de operaciones binarias sin acciones de reemplazo}
+
+Al definir una acción de reemplazo, fue posible identificar esta ocurrencia mediante una expresión regular que reconoce que se escribió un número seguido de un alias de un operador. Luego, se reemplaza la construcción:
+\begin{center}
+\Tree [.1
+  +
+  \_
+].1
+\end{center}
+
+Por 
+\begin{center}
+\Tree [.+
+  1
+  \_
+].+
+\end{center}
+
+De manera automática y sin que el usuario lo note, mostrándole \fig{aritmetic-operator-action}
+
+\imagen{aritmetic-operator-action}{Edición de operaciones binarias con acciones de reemplazo definidas}
+
+Algo similar ocurre con la alternativa condicional, pero esta vez cuando el usuario intenta borrar la rama falsa y dejar únicamente la verdadera.
+Al escribir el \emph{if} se autogenera la plantilla correspondiente \fig{if-statement}
+
+\imagen{if-statement}{Editor de la alternativa condicional con dos ramas}
+
+Pero si se intentaba borrar la rama del \textit{else}, se terminaba borrando toda la construcción del \textit{if}. Esto sucedía porque el borrado se realiza por nodo, y la alternativa es toda un único nodo.
+
+Para evitar esto, se volvió optativa la rama dalse, y se definió una acción que se dispare al intentar borrar un \textit{if}, de tal manera que en lugar de borrarlo, se elimine su hijo:
+\vspace{8mm}:
+\\
+\Tree [.IfElseStatement
+  TrueBlock
+  FalseBlock
+].IfElseStatement
+\bigskip
+
+Por otra construcción que mantiene el mismo hijo \textit{TrueBlock} y el padre, pero se borra el hijo \textit{FalseBlock}.
+\vspace{8mm}:
+\\
+\Tree [.IfElseStatement
+  TrueBlock
+  <empty>
+].IfElseStatement
+\bigskip
+
+\section{Definición de Ejercicios}\label{proyecto}
+
+Hasta el momento, las implementaciones existentes de gobstones carecían del concepto de proyecto como unidad de organización. En este trabajo se agregó esta idea bajo el rótulo de \emph{ejercicio}, con la intención de permitir no solo declarar enunciados de ejercicios, sino también de poder proveer al alumno de bibliotecas diseñadas por el docente (si el ejercicio en cuestión lo amerita) separadas de las bibliotecas de alumno.
+
+Siguiendo la filosofía planteada en este trabajo, la definición del ejercicio también se visualiza como un archivo, orientado a ser legible y con apariencia de documentación \fig{ejercicio1}
+
+\imagen{ejercicio1}{Definición de un ejercicio simple}
+
+A su vez, dentro de la definición del ejercicio es posible declarar qué herramientas del lenguaje no pueden ser usadas dentro de la resolución del mismo \fig{restricciones-ejercicio}
+
+\imagen{restricciones-ejercicio}{Definición de ejercicio con restricciones}
+
+Internamente, todo concepto del lenguaje que implemente la interfaz \textit{CanBeRestricted} aparecerá en la lista de conceptos cuyo uso puede prohibirse.
 
 \section{Conclusión}\label{conclusion}
 
+Se ha logrado finalizar exitosamente una primera versión usable de una implementación del lenguaje gobstones sobre un editor proyectivo. Los conceptos y tecnologías aplicados permitieron agregar numerosas funcionalidades esperables en un entorno de programación moderno sin grandes dificultades, y por su misma naturaleza requirieron prestar particular atención a ciertos problemas de usabilidad que devienen de la no utilización de texto.
+La capacidad de definir ejercicios con sus respectivas especificaciones, tableros, bibliotecas y restricciones constituye un aporte novedoso respecto de las implementaciones pre-existentes. Por este mismo motivo la utilidad de esta funcionalidad, así como también posibles modificaciones futuras, queda aún por ser demostrada y dependerá de la respuesta de los usuarios. Otras funcionalidades, no especificadas en \citetitle{Gobstones} pero presentes en \textit{PyGobstones}, como la posibilidad de cambiar vestimentas (estilos e imágenes) a los tableros, han resultado ser sumamente útiles a la secuencia didáctica de Gobstones y se proyecta agregarlas en versiones futuras del producto.
+Debido a que actualmente el entorno no se expuso aún a una cantidad suficiente de usuarios y testeo manual, y no posee los estilos gráficos propios de Gobstones, no se considera que esté preparado para ser usado aún en un ambiente productivo. 
+
 \section{Anexo}\label{anexo}
 
-\subsection{Configuración de los proyectos}
+Repositorio del proyecto: \url{https://github.com/uqbar-project/projectional-gobstones}
 
+\section{Agradecimientos}
+
+Mi más sincero agradecimiento a los numerosos docentes y compañeros, muchos de ellos potenciales usuarios, que me brindaron invaluables consejos y opiniones, animándome a continur con un producto que espero podrán disfrutar en un futuro cercano.

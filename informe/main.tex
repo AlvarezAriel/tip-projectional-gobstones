@@ -10,7 +10,8 @@
 \usepackage{graphicx}
 \usepackage{wrapfig}
 \usepackage{listings}
-
+\usepackage{float}
+\usepackage{hyperref}
 \usepackage{qtree}
 \qtreepadding=2pt
 
@@ -18,7 +19,7 @@
 \newcommand{\fig}[1]{\textit{Fig.\ref{fig:#1}}}
 \newcommand{\strongitem}[1]{\item \textbf{#1:}}
 \newcommand{\imagen}[2]{
-  \begin{figure}[hb]
+  \begin{figure}[H]
   \centering
   \includegraphics[width=0.48\textwidth]{assets/#1}
   \caption{#2}
@@ -27,7 +28,8 @@
 }
 \addbibresource{refs.bib}
 
-\title{Propuesta de Trabajo de Inserción Profesional}
+\title{Desarrollo de un Entorno Integrado de Aprendizaje de Programación
+utilizando Editores Proyetivos siguiendo la didáctica de Gobstones}
 \date{\today}
 
 \begin{document}
@@ -36,7 +38,7 @@
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
 
-\center % Center everything on the page
+\begin{center}
 
 %----------------------------------------------------------------------------------------
 %   HEADING SECTIONS
@@ -48,7 +50,7 @@
 %   TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-{ \huge \bfseries Propuesta de Trabajo de Inserción Profesional}\\[0.4cm] % Title of your document
+{ \huge \bfseries Trabajo de Inserción Profesional}\\[0.4cm] % Title of your document
 
 \bigskip
 \bigskip
@@ -64,14 +66,20 @@
 \bigskip
 
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{assets/logo-unq.jpg}\\[1cm]
+\end{center}
+
+\newpage
+\tableofcontents
+
 
 \end{titlepage}
 
 \maketitle
+ 
 
 \input{content.tex}
 
-\break
+\newpage
 \printbibliography
 
 \end{document}
