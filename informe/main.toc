@@ -2,32 +2,32 @@
 \defcounter {refsection}{0}\relax 
 \select@language {spanish}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {I}Introducci\IeC {\'o}n}{2}{section.1}
+\contentsline {section}{\numberline {1}Introducci\IeC {\'o}n}{1}{section.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {II}Tecnolog\IeC {\'\i }a proyectiva a usar}{3}{section.2}
+\contentsline {section}{\numberline {2}Tecnolog\IeC {\'\i }a proyectiva a usar}{2}{section.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {III}Modelo conceptual del lenguaje Gobstones}{3}{section.3}
+\contentsline {section}{\numberline {3}Modelo conceptual del lenguaje Gobstones}{2}{section.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {IV}Implementaci\IeC {\'o}n del Editor}{4}{section.4}
+\contentsline {section}{\numberline {4}Implementaci\IeC {\'o}n del Editor}{4}{section.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {V}Implementaci\IeC {\'o}n del Int\IeC {\'e}rprete}{5}{section.5}
+\contentsline {section}{\numberline {5}Implementaci\IeC {\'o}n del Int\IeC {\'e}rprete}{6}{section.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-A}}Contexto de ejecuci\IeC {\'o}n}{6}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.1}Contexto de ejecuci\IeC {\'o}n}{7}{subsection.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-B}}Clases de dominio de Gobstones}{7}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.2}Clases de dominio de Gobstones}{7}{subsection.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-C}}Edici\IeC {\'o}n del tablero inicial}{7}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.3}Edici\IeC {\'o}n del tablero inicial}{7}{subsection.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {\unhbox \voidb@x \hbox {V-D}}Renderizaci\IeC {\'o}n del tablero final}{7}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.4}Renderizaci\IeC {\'o}n del tablero final}{8}{subsection.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {VI}Chequeo de tipos}{7}{section.6}
+\contentsline {section}{\numberline {6}Chequeo de tipos}{8}{section.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {VII}Mejorando la experiencia de Usuario}{8}{section.7}
+\contentsline {section}{\numberline {7}Mejorando la experiencia de Usuario}{8}{section.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {VIII}Definici\IeC {\'o}n de Ejercicios}{9}{section.8}
+\contentsline {section}{\numberline {8}Definici\IeC {\'o}n de Ejercicios}{9}{section.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {IX}Conclusi\IeC {\'o}n}{9}{section.9}
+\contentsline {section}{\numberline {9}Conclusi\IeC {\'o}n}{9}{section.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {X}Anexo}{10}{section.10}
+\contentsline {section}{\numberline {10}Anexo}{10}{section.10}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {XI}Agradecimientos}{10}{section.11}
+\contentsline {section}{\numberline {11}Agradecimientos}{10}{section.11}
