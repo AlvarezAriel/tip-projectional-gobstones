@@ -12,7 +12,7 @@ Luego, cuando el alumno pasa a un ciclo superior secundario o a la universidad, 
 
 Si bien Gobstones cuenta con un modelo acotado y una secuencia didáctica clara que lo convierten en una gran herramienta para la enseñanza \footfullcite{gobstonesEsImportante}; al ser basado en texto presenta un nivel de complejidad que puede no resultar adecuado para ciclos inferiores.
 
-En este contexto surgió la propuesta de crear una implementación de Gobstones que permitiera únicamente sintaxis válida, de manera similar a los lenguajes visuales ya usados en la enseñanza de la programación, reduciendo así elementos superfluos que pudieran entorpecer la secuencia didáctica planteada para el segundo ciclo de la educación primaria y el primer ciclo de la educación secundaria.
+En este contexto surgió la propuesta de crear una nueva implementación de Gobstones (acotada en features respecto de la implementación existente hasta el momento) que permitiera únicamente sintaxis válida, de manera similar a los lenguajes visuales ya usados en la enseñanza de la programación, reduciendo así elementos superfluos que pudieran entorpecer la secuencia didáctica planteada para el segundo ciclo de la educación primaria y el primer ciclo de la educación secundaria.
 Además se presenta a esta implementación de Gobstones en un entorno que acompañe su secuencia didáctica, tanto desde la construcción de ejercicios y planteo de problemas, como la inclusión incremental de conceptos nuevos durante el proceso de aprendizaje. Se pretende entonces lograr una continuidad entre la enseñanza de la programación utilizando componentes visuales y texto, volviendo más gradual la transición entre uno y otro.
 
 Para lograr esta experiencia cercana al texto pero con la ausencia de errores sintácticos, se decidió trabajar sobre un \emph{editor proyectivo}, ya que solamente permite ingresar construcciones sintácticamente válidas en un formato estandarizado (espacios, indentación y demás elementos estéticos son dados por el editor, no por el usuario).
@@ -196,7 +196,7 @@ Se puede apreciar en \fig{sandbox-editor} que el editor resultante incluye funci
 
 \section{Implementación del Intérprete}\label{interprete}
 
-Una vez definido el editor proyectivo debemos ser capaces de ejecutar el programa. En esta instancia se presentaron varias alternativas de implementación posibles: compilando o traduciendo a otro lenguaje que luego será ejecutado, es decir, generando de código; o interpretando el programa sin generar código. La generación de código hubiera implicado depender de un compilador o una VM específica, y por consiguiente complejizado la instalación del producto final (ya sea dependiendo de que la máquina donde se fuera a usar la herramienta final poseyera este compilador, o al verse obligado a empaquetar un compilador o implementación de VM junto con el instalador del entorno), con lo cual se optó por desarrollar un intérprete a partir del ambiente de nodos de conceptos.
+Una vez definido el editor proyectivo debemos ser capaces de ejecutar el programa. En esta instancia se presentaron varias alternativas de implementación posibles: compilando o traduciendo a otro lenguaje que luego será ejecutado, es decir, generando de código; o interpretando el programa sin generar código. La generación de código hubiera implicado depender de un compilador o una VM específica, y por consiguiente hubiera complejizado la instalación del producto final (ya sea dependiendo de que la máquina donde se fuera a usar la herramienta final poseyera este compilador, o al verse obligado a empaquetar un compilador o implementación de VM junto con el instalador del entorno), con lo cual se optó por desarrollar un intérprete a partir del ambiente de nodos de conceptos.
 
 En esta etapa se hizo uso del aspecto de comportamiento (\textit{behaviour}), que permitió agregar métodos e inicializaciones a los conceptos, utilizando un DSL con una sintaxis similar a Java. Esto fue así porque al momento de implementar el intérprete, la herramienta no contaba con un aspecto dedicado exclusivamente a la interpretación. Sin embargo, futuras versiones de MPS permitirán extensión mediante la definición de nuevos aspectos por parte del usuario, con lo cual una práctica recomendable será encapsular el comportamiento del intérprete en un aspecto distinto del de \textit{behaviour}, y que podremos llamar \textit{interpreter}.
 
@@ -301,23 +301,15 @@ De manera automática y sin que el usuario lo note, mostrándole \fig{aritmetic-
 
 \imagen{aritmetic-operator-action}{Edición de operaciones binarias con acciones de reemplazo definidas}
 
-Algo similar ocurre con la alternativa condicional, pero esta vez cuando el usuario intenta borrar la rama falsa y dejar únicamente la verdadera.
-Al escribir el \emph{if} se autogenera la plantilla correspondiente \fig{if-statement}
-
-\imagen{if-statement}{Editor de la alternativa condicional con dos ramas}
-
-pero si se intentaba borrar la rama del \textit{else}, se terminaba borrando toda la construcción del \textit{if}. Esto sucedía porque el borrado se realiza por nodo, y la alternativa es toda un único nodo. Para evitar este problema, se volvió optativa la rama \textit{false} y se definió una acción que se dispare al intentar borrar un \textit{if}, de tal manera que en lugar de borrarlo se elimine su hijo: 
+Algo similar ocurrió con la alternativa condicional, pero esta vez cuando el usuario intentaba borrar la rama falsa y dejar únicamente la verdadera.
+Al escribir el \emph{if} se autogeneraba la plantilla correspondiente que se muestra en la \fig{if-statement} \imagen{if-statement}{Editor de la alternativa condicional con dos ramas} pero si se intentaba borrar la rama del \textit{else}, se terminaba borrando toda la construcción del \textit{if}. Esto sucedía porque el borrado se realizaba por nodo, y la alternativa estaba conformada por un único nodo. Para evitar este problema se volvió optativa la rama \textit{false} y se definió una acción que se dispare al intentar borrar un \textit{if}, de tal manera que en lugar de borrarlo se elimine su hijo:
 
 \centertree{
   [IfElseStatement
     [TrueBlock]
     [FalseBlock]
   ]
-}
-
-\bigskip
-
-Por otra construcción que mantiene el mismo hijo \textit{TrueBlock} y el padre, pero se borra el hijo \textit{FalseBlock}:
+} por otra construcción que mantiene el mismo hijo \textit{TrueBlock} y el padre, pero se borra el hijo \textit{FalseBlock}:
 
 \centertree{
   [IfElseStatement
