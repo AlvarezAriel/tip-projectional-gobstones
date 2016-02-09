@@ -49,7 +49,7 @@ Algunas consecuencias de los editores proyectivos:
   \end{itemize}
 \end{itemize}
 
-\subsection{Organización de este Informe}
+\subsection{Organización de este informe}
 
 En la sección \ref{tecnologias} se presenta la tecnología a usar y en la sección \ref{dominio} se describe el desarrollo del modelo conceptual del lenguaje Gobstones en términos de esa tecnología. En la sección \ref{editor} se muestra cómo este modelo conceptual se proyecta sobre el editor. Una vez creado el editor, se procede a implementar el intérprete del lenguaje y la renderización de los tableros inicial y final. Teniendo el lenguaje básico funcionando, se trabaja en la sección \ref{chequeo} sobre el sistema de chequeo de tipos, orientado a asistir al estudiante mediante mensajes de error legibles. En la sección \ref{usabilidad} se analizan problemas típicos de los editores proyectivos y se busca mejorar la experiencia de usuario aplicando diferentes técnicas que facilitan una edición más familiar, es decir, más cercana a una expriencia de edición de texto. Luego en la sección \ref{proyecto} se extiende el proyecto agregando la capacidad de \textit{definir ejercicios}, que constituye un lenguaje específico de dominio cuya finalidad es permitirle al docente plantear ejercicios, desde título y descripción hasta restriciones de features de lenguaje y análisis de código. En la sección \ref{conocimientos} se destacan brevemente los conocimientos aplicados durante el desarrollo del proyecto y por último en la sección \ref{conclusion} se cierra el informe con una conclusión e ideas sobre el camino que el proyecto pudiera seguir a futuro.
 
@@ -98,7 +98,7 @@ Y el primer nivel de la jerarquía de expresiones se compone de:
   [Expression 
       [BinaryOperation]
       [Value]
-      [Function]
+      [FunctionCall]
   ]
 }
 
@@ -177,7 +177,7 @@ El diseño del editor buscó respetar los principios de la programación orienta
   ]  
 }
 
-Por otro lado, el coloreado de sintaxis, identación, retorno de carro y demás detalles estéticos se determinan mediante una planilla de estilos, cuidando mantener consistencia entre los diferentes elementos del lenguaje. Por ejemplo, si bien la implementación interna de llamadas a procedimientos nativos y llamadas a procedimientos de usuario son diferentes, ambos comparten los mismos estilos \fig{editor-style}.
+Por otro lado, el coloreado de sintaxis, indentación, retorno de carro y demás detalles estéticos se determinan mediante una planilla de estilos, cuidando mantener consistencia entre los diferentes elementos del lenguaje. Por ejemplo, si bien la implementación interna de llamadas a procedimientos nativos y llamadas a procedimientos de usuario son diferentes, ambos comparten los mismos estilos \fig{editor-style}.
 
 \imagen{editor-style}{Definición de estilos para la invocación de procedimientos}
 
@@ -205,13 +205,8 @@ Se definió en el concepto abstracto \textit{Statement} un método \textit{inter
 
 \imagen{behavior_statement}{Comportamiento del concepto abstracto Statement}
 
+\imagen{behavior_ifElse}{Interpretación de la alternativa condicional}
 
-\begin{figure}[hb]
-\centering
-\includegraphics[width=0.5\textwidth]{assets/behavior_ifElse}
-\caption{Interpretación de la alternativa condicional}
-\label{fig:behavior_ifElse}
-\end{figure}
 
 La evaluación de esta condición es posible porque, de manera similar a como se implementa la interpretación para cada sentencia, cada \textit{Expression} entiende el mensaje \textit{reduce}, que toma como argumento un estado del programa y retorna una instancia de \textit{InterpreterValue}, la cual encapsula el valor resultante y contiene información del tipo de este valor. 
 
@@ -230,7 +225,8 @@ Volviendo a la implementación actual, para el caso de las funciones no solo se 
 
 \subsection{Clases de dominio de Gobstones}
 
-En un subproyecto separado del editor, llamado \textit{JavaGobstones}, se definieron las clases de dominio de Gobstones: tablero, celdas, bolitas, colores, etc, en una versión proyectiva del lenguaje Java. Estas clases tienen el comportamiento específico del dominio y permiten mantener el estado del programa en tiempo de interpretación. Las interpretaciones de los procedimientos y funciones nativos de Gobstones interactúan directamente con este modelo, de forma tal que, por ejemplo, la interpretación del procedimiento \textit{Poner(<color>)} es un mensaje \textit{addStones(Color color, int quantity)} que se le envía al tablero.
+El proyecto se organiza en varios subproyectos o módulos: un proyecto para el editor, otro para definir el tablero como componente customizado, y otro más para el modelo puro de Gobstones. En este último se definieron las entidades que constituyen el dominio de Gobstones y su comportamiento, tales como el tablero, las celdas, las bolitas, entre otros, utilizando una implementación proyectiva del lenguaje Java. En este modelo quedaron definidas las funcionalidades nativas que le permiten al intérprete interactuar con el tablero de forma tal que, por ejemplo, la interpretación del procedimiento \textit{Poner(<color>)} se termina traduciendo en un mensaje \textit{board.addStones(Color color, int quantity)}. En otras palabras, toda la lógica perteneciente a los elementos concretos de Gobstones queda encapsulada en estas clases de dominio, en su módulo específico e independiente de los otros módulos.
+Estas clases constituyen una de las porciones de código más ejecutadas del proyecto y requirieron el uso de estructuras de datos adecuadas para evitar un impacto notable en la performance, no sólo en términos de procesamiento, sino también en generación de instancias. En particular, el tablero guarda la información de sus celdas en un TreeSet \footfullcite{treeSet} para unicamente generar la cantidad de instancias de celdas necesaria. Si bien otras optimizaciones más agresivas eran posibles, no surgió la necesidad de aplicarlas y muchas hubieran implicado reducir la calidad del diseño trabajando sobre estructuras de más bajo nivel.
 
 \subsection{Edición del tablero inicial}
 
@@ -255,14 +251,14 @@ El tablero final es una vista con \textit{binding unidireccional} que renderiza 
 
 \section{Chequeo de tipos}\label{chequeo}
 
-Para implementar el chequeo de tipos se tomó como base el trabajo de inserción profesional de \textit{Federico A. Sawady O’Connor} titulado \textit{Formalización e implementación de un sistema de tipos para el lenguaje de programación Gobstones (UNQ 2012)}, donde se presentan las reglas de inferencia de tipos necesarias para implementar los chequeos de tipos en Gobstones. 
+Para implementar el chequeo de tipos se tomó como base el trabajo de inserción profesional de \textit{Federico A. Sawady O’Connor} titulado \textit{Formalización e implementación de un sistema de tipos para el lenguaje de programación Gobstones} \cite{TiposGobstones}, donde se presentan las reglas de inferencia de tipos necesarias para implementar los chequeos de tipos en Gobstones. 
 Tomando las reglas puras como base, se implementaron las reglas en MPS dentro del aspecto de sistema de tipos \textit{typesystem}. Por ejemplo, la regla de tipado de las operaciones aritméticas queda denotada por \textit{typeof\_IntegerOperation} en \fig{rule_operation}.
 En la \fig{type-check-example} se ejemplifica un error durante el chequeo de tipos, el cual se muestra como un error legible en castellano.
 
 \imagen{rule_operation}{Regla de inferencia de tipos para operaciones aritméticas}
 \imagen{type-check-example}{Ejemplo de alerta durante el chequeo de tipos}
 
-Además de las reglas de inferencia, es posible crear chequeos manuales por fuera del sistema de tipos. Esto fue de utilidad a la hora de validar que los nombres de procedimientos comiencen con mayúscula y los nombres de funciones con minúscula.
+Además de las reglas de inferencia, es posible crear chequeos manuales por fuera del sistema de tipos. Esto fue de utilidad a la hora de validar que los nombres de procedimientos comiencen con mayúscula y los nombres de funciones con minúscula, ya que al no existir lexers ni parsers, este tipo de restricciones deben declararse en una regla propia.
 
 \section{Mejorando la experiencia de Usuario}\label{usabilidad}
 
@@ -334,17 +330,20 @@ Por otra construcción que mantiene el mismo hijo \textit{TrueBlock} y el padre,
 
 \section{Definición de Ejercicios}\label{proyecto}
 
-Hasta el momento, las implementaciones existentes de gobstones carecían del concepto de proyecto como unidad de organización. En este trabajo se agregó esta idea bajo el rótulo de \emph{ejercicio}, con la intención de permitir no solo declarar enunciados de ejercicios, sino también de poder proveer al alumno de bibliotecas diseñadas por el docente (si el ejercicio en cuestión lo amerita) separadas de las bibliotecas de alumno.
+Hasta el momento, las implementaciones existentes de gobstones carecían del concepto de proyecto como unidad de organización, y sólo se podía tener un archivo fuente principal y una única biblioteca. Sin embargo, esta única biblioteca comenzó a tener dos usos bien diferenciados por parte de docentes y alumnos: por un lado el alumno quería tener siempre disponible rutinas reutilizables que había hecho para otros ejercicios, y por el otro un docente podía querer brindarle al alumno una biblioteca con funciones y procedimientos ya creados, para trabajar sobre un ejercicio en un nivel de abstracción más alto.
+Viendo esta dicotomía, se decidió agregar la idea proyecto bajo el rótulo de \emph{ejercicio}, con la intención de permitir no solo declarar enunciados de ejercicios, sino también de poder proveer al alumno de bibliotecas diseñadas por el docente (si el ejercicio en cuestión lo amerita) separadas de las bibliotecas de alumno.
 
-Siguiendo la filosofía planteada en este trabajo, la definición del ejercicio también se visualiza como un archivo, orientado a ser legible y con apariencia de documentación, como se observa en la \fig{ejercicio1}
+Estas bibliotecas no constituyen \textit{imports} en el sentido tradicional, dado que no se establecen desde el programa, sino que son dependencias inyectadas por el ejercicio. Esto permite agregar bibliotecas sin modificar el lenguaje Gobstones, y por ende sin aumentar la complejidad del programa creado por el alumno. Por el momento no hay implementada una resolución de posibles conflictos de nombres entre diferentes bibliotecas, quedando a discreción de los usuarios.
+
+Siguiendo la filosofía planteada en este proyecto, la definición del ejercicio también se visualiza como un archivo, orientado a ser legible y con apariencia de documentación, como se observa en la \fig{ejercicio1}
 
 \imagen{ejercicio1}{Definición de un ejercicio simple}
 
-A su vez, dentro de la definición del ejercicio es posible declarar qué herramientas del lenguaje no pueden ser usadas dentro de la resolución del mismo \fig{restricciones-ejercicio}
+A su vez, dentro de la definición del ejercicio es posible declarar qué herramientas del lenguaje no pueden ser usadas dentro de la resolución del mismo, como muestra la \fig{restricciones-ejercicio}
 
 \imagen{restricciones-ejercicio}{Definición de ejercicio con restricciones}
 
-Internamente, todo concepto del lenguaje que implemente la interfaz \textit{CanBeRestricted} aparecerá en la lista de conceptos cuyo uso puede prohibirse.
+Internamente, todo concepto del lenguaje que implemente la interfaz \textit{CanBeRestricted} aparecerá en la lista de conceptos cuyo uso puede prohibirse. Esto permite reforzar la introducción gradual de conceptos de programación: al presentarle al alumno un problema que no puede resolver con las herramientas que conoce, se genera la necesidad de indagar por aquello que le está faltando. A este tipo de aprendizaje se lo conoce como \textit{aprendizaje basado en problemas} o \textit{aprendizaje por indagación} \cite{Inquiry}, y constituye uno los pilares fundacionales de la secuencia didáctica de Gobstones.
 
 
 \section{Conocimientos Aplicados}\label{conocimientos}
