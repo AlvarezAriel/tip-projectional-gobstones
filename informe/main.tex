@@ -12,8 +12,11 @@
 \usepackage{listings}
 \usepackage{float}
 \usepackage{hyperref}
-\usepackage{qtree}
-\qtreepadding=2pt
+
+\usepackage{forest}
+
+\usetikzlibrary{shadows}
+
 
 \usepackage{float}
 \floatstyle{boxed} 
@@ -25,10 +28,18 @@
 \newcommand{\imagen}[2]{
   \begin{figure}[h]
   \centering
-  \includegraphics{assets/#1}
+  \includegraphics[width=0.66\textwidth]{assets/#1}
   \caption{#2}
   \label{fig:#1}
   \end{figure}
+}
+\newcommand{\centertree}[1]{
+  \begin{center}
+    \begin{forest}
+      blue tree style
+      #1
+    \end{forest}
+  \end{center}
 }
 \addbibresource{refs.bib}
 
@@ -37,6 +48,42 @@ utilizando Editores Proyectivos siguiendo la didáctica de Gobstones}
 \date{\today}
 
 \begin{document}
+
+\tikzset{
+  blue node style/.style={
+    font=\small,
+    top color=white,
+    bottom color=blue!25,
+    rectangle,
+    rounded corners,
+    minimum size=6mm,
+    draw=blue!75,
+    very thick,
+    drop shadow,
+    align=center,
+  }
+}
+\forestset{
+  blue tree style/.style={
+    for tree={
+      parent anchor=south,
+      child anchor=north,
+      l sep+=5pt,
+      blue node style,
+      edge={draw=blue!50, thick},
+      edge path={
+        \noexpand\path [draw, \forestoption{edge}] (!u.parent anchor) -- +(0,-7.5pt) -| (.child anchor)\forestoption{edge label};
+      },
+      if n children=3{
+        for children={
+          if n=2{calign with current}{}
+        }
+      }{},
+      delay={if content={}{shape=coordinate}{}}
+    }
+  }
+}
+
 
 \begin{titlepage}
 
