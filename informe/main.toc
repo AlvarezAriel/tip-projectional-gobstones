@@ -24,15 +24,15 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {5.3}Edici\IeC {\'o}n del tablero inicial}{10}{subsection.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.4}Renderizaci\IeC {\'o}n del tablero final}{11}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.4}Renderizaci\IeC {\'o}n del tablero final}{10}{subsection.5.4}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {6}Chequeo de tipos}{11}{section.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {7}Mejorando la experiencia de Usuario}{11}{section.7}
+\contentsline {section}{\numberline {7}Mejorando la experiencia de Usuario}{12}{section.7}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {8}Definici\IeC {\'o}n de Ejercicios}{14}{section.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {9}Conocimientos Aplicados}{15}{section.9}
+\contentsline {section}{\numberline {9}Conocimientos Aplicados}{14}{section.9}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {10}Conclusi\IeC {\'o}n}{15}{section.10}
 \defcounter {refsection}{0}\relax 
